@@ -1,0 +1,8 @@
+{
+  "name": "TurNom Ramp",
+  "description": "Aplicación personalizada para el registro de jornadas laborales, turnos y cálculo de nóminas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,331 @@
+{
+  "entities": {
+    "LevelData": {
+      "title": "LevelData",
+      "description": "Salary level data for a specific year",
+      "type": "object",
+      "properties": {
+        "year": { "type": "number" },
+        "nivel": { "type": "number" },
+        "anual": { "type": "number" }
+      },
+      "required": ["year", "nivel", "anual"]
+    },
+    "PlusesData": {
+      "title": "PlusesData",
+      "description": "Complementary plus configuration for a specific year",
+      "type": "object",
+      "properties": {
+        "year": { "type": "number" },
+        "name": { "type": "string" },
+        "value": { "type": "number" },
+        "subValue": { "type": "number" },
+        "startHour": { "type": "string" },
+        "endHour": { "type": "string" },
+        "subStartHour": { "type": "string" },
+        "subEndHour": { "type": "string" },
+        "madrugueStart": { "type": "string" },
+        "madrugueEnd": { "type": "string" },
+        "madrugueMinEnd": { "type": "string" },
+        "madrugueMinEndEnabled": { "type": "boolean" },
+        "subMadrugueStart": { "type": "string" },
+        "subMadrugueEnd": { "type": "string" },
+        "subMadrugueMinEnd": { "type": "string" },
+        "subMadrugueMinEndEnabled": { "type": "boolean" },
+        "pagas": { "type": "number", "enum": [12, 14] },
+        "enabled": { "type": "boolean" },
+        "isVariable": { "type": "boolean" }
+      },
+      "required": ["year", "name", "value", "pagas", "enabled"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Application settings including preferences, options, and historic payrolls",
+      "type": "object",
+      "properties": {
+        "contractType": { "type": "string", "enum": ["Completo", "Parcial"] },
+        "pagas": { "type": "number", "enum": [12, 14] },
+        "seniorityDate": { "type": "string", "format": "date" },
+        "nextLevelDate": { "type": "string", "format": "date" },
+        "holidays": { "type": "array", "items": { "type": "string" } },
+        "vacations": { "type": "array", "items": { "type": "string" } },
+        "frozenPeriods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": { "type": "string" },
+              "end": { "type": "string" }
+            }
+          }
+        },
+        "irpf": { "type": "number" },
+        "rateContingencias": { "type": "number" },
+        "rateDesempleo": { "type": "number" },
+        "rateFormacion": { "type": "number" },
+        "rateEquidad": { "type": "number" },
+        "cuotaSindical": { "type": "number" },
+        "currentLevel": { "type": "number" },
+        "selectedLevel": { "type": "number" },
+        "monthlyOptions": { "type": "object" },
+        "counterPeriod": {
+          "type": "object",
+          "properties": {
+            "start": { "type": "string" },
+            "end": { "type": "string" }
+          }
+        },
+        "counterTargets": { "type": "object" },
+        "yearlyUpdates": { "type": "object" },
+        "yearlySubUpdates": { "type": "object" },
+        "isSubrogado": { "type": "boolean" },
+        "subrogadoBaseSalaries": { "type": "object" },
+        "complementariasPrice": { "type": "number" },
+        "expandedTablasSections": { "type": "object" },
+        "savedPayrolls": { "type": "array" },
+        "uploadedPayrolls": { "type": "array" },
+        "dualMode": { "type": "boolean" },
+        "secondCompanyName": { "type": "string" },
+        "secondCompanyShifts": { "type": "array" },
+        "calendarRotation": { "type": "object" },
+        "autoShiftsConfig": { "type": "object" },
+        "customRotation": { "type": "object" },
+        "mixedRotation": { "type": "object" }
+      }
+    },
+    "DayShift": {
+      "title": "DayShift",
+      "description": "Daily shift data",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "type": { "type": "string", "enum": ["Laboral", "A Compensar", "Vacaciones", "Baja IT", "Ausencia Justificada"] },
+        "shifts": { 
+          "type": "array", 
+          "items": { 
+            "type": "object",
+            "properties": {
+              "start": { "type": "string" },
+              "end": { "type": "string" }
+            }
+          }
+        },
+        "perentorias": { 
+          "type": "object",
+          "properties": {
+            "day": { "type": "number" },
+            "night": { "type": "number" }
+          }
+        },
+        "complementarias": { 
+          "type": "object",
+          "properties": {
+            "day": { "type": "number" },
+            "night": { "type": "number" }
+          }
+        },
+        "extraShifts": { 
+          "type": "array",
+          "items": { 
+            "type": "object",
+            "properties": {
+              "start": { "type": "string" },
+              "end": { "type": "string" }
+            }
+          }
+        },
+        "generatePluses": { "type": "boolean" },
+        "extraHoursStrategy": { "type": "string", "enum": ["pay", "compensate"] },
+        "swapInfo": { "type": "object" }
+      }
+    },
+    "SharedMonth": {
+      "title": "SharedMonth",
+      "description": "Shared monthly shifts identified by a 4-character alphanumeric code",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "monthKey": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "shifts": { "type": "array" },
+        "vacations": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["code", "monthKey", "shifts"]
+    },
+    "Suggestion": {
+      "title": "Suggestion",
+      "description": "User suggestions and feedback",
+      "type": "object",
+      "properties": {
+        "userName": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "appVersion": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "screenshots": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["userName", "type", "description"]
+    },
+    "SuggestionSettings": {
+      "title": "SuggestionSettings",
+      "description": "Global admin notification preferences for the suggestions inbox",
+      "type": "object",
+      "properties": {
+        "notifyEmail": { "type": "boolean" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["notifyEmail"]
+    },
+    "SharingConfig": {
+      "title": "SharingConfig",
+      "description": "User quadrant sharing configuration and authorized editors",
+      "type": "object",
+      "properties": {
+        "ownerUid": { "type": "string" },
+        "ownerEmail": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "editors": { "type": "array", "items": { "type": "string" } },
+        "editorUids": { "type": "array", "items": { "type": "string" } },
+        "disabledEditors": { "type": "array", "items": { "type": "string" } },
+        "disabledEditorUids": { "type": "array", "items": { "type": "string" } },
+        "activeCode": { "type": "string" },
+        "isLocked": { "type": "boolean" },
+        "hidePayrollAmounts": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      }
+    },
+    "Collaboration": {
+      "title": "Collaboration",
+      "description": "Cross-user editing link allowing an authorized editor to view and edit an owner's quadrant",
+      "type": "object",
+      "properties": {
+        "ownerUid": { "type": "string" },
+        "ownerEmail": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "editorEmail": { "type": "string" },
+        "editorUid": { "type": "string" },
+        "isLocked": { "type": "boolean" },
+        "hidePayrollAmounts": { "type": "boolean" },
+        "isDisabled": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["ownerUid", "editorEmail"]
+    },
+    "CollaborationCode": {
+      "title": "CollaborationCode",
+      "description": "6-character invite code to join a user's shared quadrant",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "ownerEmail": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["code", "ownerUid"]
+    },
+    "SwapNotification": {
+      "title": "SwapNotification",
+      "description": "In-app notification sent between collaborators for shift swap requests, responses, and undo actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "type": { "type": "string", "enum": ["shift_swap", "shift_swap_undo", "shift_swap_request", "shift_swap_accepted", "shift_swap_rejected"] },
+        "recipientUid": { "type": "string", "maxLength": 128 },
+        "senderUid": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 120 },
+        "senderEmail": { "type": "string", "maxLength": 200 },
+        "myOriginalDate": { "type": "string", "maxLength": 20 },
+        "myOriginalShifts": { "type": "array" },
+        "coveredDate": { "type": "string", "maxLength": 20 },
+        "coveredShifts": { "type": "array" },
+        "appliedToCalendar": { "type": "boolean" },
+        "read": { "type": "boolean" },
+        "requestId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected", "undone"] },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["id", "type", "recipientUid", "senderUid", "senderName", "myOriginalDate", "myOriginalShifts", "coveredDate", "coveredShifts", "appliedToCalendar", "read", "createdAt", "timestamp"]
+    },
+    "SwapRequest": {
+      "title": "SwapRequest",
+      "description": "Shift swap request between two collaborators with pending, accepted, rejected, or undone status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "senderUid": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 120 },
+        "senderEmail": { "type": "string", "maxLength": 200 },
+        "recipientUid": { "type": "string", "maxLength": 128 },
+        "recipientName": { "type": "string", "maxLength": 120 },
+        "recipientEmail": { "type": "string", "maxLength": 200 },
+        "senderDate": { "type": "string", "maxLength": 20 },
+        "senderShifts": { "type": "array" },
+        "recipientDate": { "type": "string", "maxLength": 20 },
+        "recipientShifts": { "type": "array" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected", "undone"] },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 },
+        "respondedAt": { "type": "string", "maxLength": 50 },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["id", "senderUid", "senderName", "recipientUid", "recipientName", "senderDate", "senderShifts", "recipientDate", "recipientShifts", "status", "createdAt", "updatedAt", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/levels/{levelId}": {
+      "schema": "LevelData",
+      "description": "User salary levels keyed by year and level number"
+    },
+    "/users/{userId}/pluses/{plusId}": {
+      "schema": "PlusesData",
+      "description": "User complementary plus configurations keyed by year and plus identifier"
+    },
+    "/users/{userId}/config/settings": {
+      "schema": "AppSettings",
+      "description": "User application settings and configurations"
+    },
+    "/users/{userId}/config/sharing": {
+      "schema": "SharingConfig",
+      "description": "User sharing settings and authorized editor list"
+    },
+    "/users/{userId}/shifts/{date}": {
+      "schema": "DayShift",
+      "description": "User daily shifts keyed by ISO date"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": "SwapNotification",
+      "description": "In-app shift swap notifications between collaborators"
+    },
+    "/swap_requests/{requestId}": {
+      "schema": "SwapRequest",
+      "description": "Shift swap requests with approval workflow between sender and recipient"
+    },
+    "/collaborations/{collabId}": {
+      "schema": "Collaboration",
+      "description": "Active quadrant editing permissions between owner and editor"
+    },
+    "/collaboration_codes/{code}": {
+      "schema": "CollaborationCode",
+      "description": "Temporary 6-char link codes to grant quadrant editing rights"
+    },
+    "/shared_months/{code}": {
+      "schema": "SharedMonth",
+      "description": "Shared monthly schedule keyed by 4-char alphanumeric code"
+    },
+    "/suggestions/{suggestionId}": {
+      "schema": "Suggestion",
+      "description": "User feedback and suggestions"
+    },
+    "/suggestion_settings/{docId}": {
+      "schema": "SuggestionSettings",
+      "description": "Admin email notification settings for the suggestions inbox"
+    }
+  }
+}

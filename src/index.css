@@ -1,0 +1,1795 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-azul-blue: #003399;
+  --color-azul-yellow: #FFD700;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    inset: 0;
+    touch-action: manipulation;
+  }
+
+  body {
+    @apply bg-slate-50/50 text-slate-900 antialiased transition-colors duration-200;
+  }
+
+  /* Prevent iOS Safari automatic zoom on inputs which causes touch coordinate misalignment */
+  @supports (-webkit-touch-callout: none) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Premium Pizarra Crepuscular Custom Dark Mode Overrides */
+  body.dark {
+    background-color: #020617 !important;
+    color: #f8fafc !important;
+  }
+
+  body.dark div.h-\[100dvh\] {
+    background-color: #020617 !important;
+  }
+
+  /* Header */
+  body.dark header {
+    background-color: #0f172a !important;
+    border-color: #1e293b !important;
+  }
+  body.dark header h1 {
+    color: #ffffff !important;
+  }
+
+  /* Nav */
+  body.dark nav {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    border-color: #1e293b !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3) !important;
+  }
+  body.dark nav button {
+    color: #94a3b8 !important;
+  }
+  body.dark nav button.text-azul-blue {
+    color: #FFD700 !important; /* Gold active tab icon! */
+  }
+  body.dark nav button.text-azul-blue span {
+    color: #FFD700 !important;
+  }
+
+  /* Cards / Containers / Modals / Dialogs */
+  body.dark .bg-white,
+  body.dark .bg-slate-50,
+  body.dark .bg-slate-150,
+  body.dark .bg-slate-200,
+  body.dark .bg-slate-100 {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+
+  body.dark .bg-white\/40,
+  body.dark .bg-white\/50,
+  body.dark .bg-white\/60,
+  body.dark .bg-white\/30,
+  body.dark .bg-slate-50\/50,
+  body.dark .bg-slate-50\/20,
+  body.dark .bg-slate-100\/50,
+  body.dark .bg-slate-100\/30 {
+    background-color: rgba(30, 41, 59, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* Calendar empty day backgrounds */
+  body.dark .bg-slate-50\/20 {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+  }
+
+  /* Borders */
+  body.dark .border-slate-200,
+  body.dark .border-slate-100,
+  body.dark .border-slate-300,
+  body.dark .border-slate-150,
+  body.dark .border-slate-100\/50,
+  body.dark .border-indigo-100\/60,
+  body.dark .border-amber-100\/60,
+  body.dark .border-emerald-100\/60,
+  body.dark .border-rose-100\/60 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Text elements */
+  body.dark .text-slate-900,
+  body.dark .text-slate-800,
+  body.dark .text-slate-700,
+  body.dark .text-slate-650,
+  body.dark .text-slate-600 {
+    color: #f1f5f9 !important;
+  }
+  body.dark .text-slate-500,
+  body.dark .text-slate-400 {
+    color: #94a3b8 !important;
+  }
+
+  /* Light background colored tabs / alerts */
+  body.dark .bg-indigo-50,
+  body.dark .bg-indigo-50\/50,
+  body.dark .bg-indigo-100\/70,
+  body.dark .bg-indigo-50\/30 {
+    background-color: rgba(99, 102, 241, 0.15) !important;
+    color: #c7d2fe !important;
+    border-color: rgba(99, 102, 241, 0.2) !important;
+  }
+  body.dark .bg-amber-50,
+  body.dark .bg-amber-50\/50,
+  body.dark .bg-amber-100\/80,
+  body.dark .bg-amber-50\/30 {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+    color: #fde047 !important;
+    border-color: rgba(245, 158, 11, 0.2) !important;
+  }
+  body.dark .bg-emerald-50,
+  body.dark .bg-emerald-50\/50,
+  body.dark .bg-emerald-100\/80,
+  body.dark .bg-emerald-50\/30 {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    color: #6ee7b7 !important;
+    border-color: rgba(16, 185, 129, 0.2) !important;
+  }
+  body.dark .bg-rose-50,
+  body.dark .bg-rose-50\/50,
+  body.dark .bg-rose-100\/80,
+  body.dark .bg-rose-50\/30 {
+    background-color: rgba(244, 63, 94, 0.15) !important;
+    color: #fecdd3 !important;
+    border-color: rgba(244, 63, 94, 0.2) !important;
+  }
+  body.dark .bg-sky-50,
+  body.dark .bg-sky-50\/50,
+  body.dark .bg-sky-50\/10 {
+    background-color: rgba(14, 165, 233, 0.15) !important;
+    color: #7dd3fc !important;
+    border-color: rgba(14, 165, 233, 0.2) !important;
+  }
+  body.dark .bg-blue-50,
+  body.dark .bg-blue-50\/50 {
+    background-color: rgba(59, 130, 246, 0.15) !important;
+    color: #93c5fd !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+  }
+  body.dark .bg-purple-50\/30 {
+    background-color: rgba(168, 85, 247, 0.15) !important;
+    color: #f5f3ff !important;
+  }
+
+  /* Colored Texts */
+  body.dark .text-indigo-600,
+  body.dark .text-indigo-700 {
+    color: #a5b4fc !important;
+  }
+  body.dark .text-amber-600,
+  body.dark .text-amber-700,
+  body.dark .text-azul-yellow {
+    color: #fde047 !important;
+  }
+  body.dark .text-emerald-600,
+  body.dark .text-emerald-700 {
+    color: #34d399 !important;
+  }
+  body.dark .text-rose-600,
+  body.dark .text-rose-700 {
+    color: #fda4af !important;
+  }
+  body.dark .text-sky-600,
+  body.dark .text-sky-700 {
+    color: #38bdf8 !important;
+  }
+  body.dark .text-blue-600,
+  body.dark .text-blue-700,
+  body.dark .text-azul-blue {
+    color: #60a5fa !important;
+  }
+
+  /* Header Trigger Button */
+  body.dark button.bg-slate-100 {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #ffffff !important;
+  }
+
+  /* Forms & Inputs */
+  body.dark input,
+  body.dark select,
+  body.dark textarea {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  body.dark input[type="date"] {
+    color-scheme: dark;
+  }
+  body.dark input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  /* Shadows styling */
+  body.dark .shadow-sm,
+  body.dark .shadow-md,
+  body.dark .shadow-lg,
+  body.dark .shadow-xl,
+  body.dark .shadow-2xl {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Popups & Modals backdrop override */
+  body.dark .bg-slate-900\/40 {
+    background-color: rgba(2, 6, 17, 0.75) !important;
+  }
+
+  /* PESTAÑA CONFIGURACIÓN */
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue,
+  body.dark [data-active-tab="Configuracion"] section.bg-black,
+  body.dark [data-active-tab="Configuracion"] section.bg-emerald-50\/30,
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-yellow {
+    background-color: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+  }
+  body.dark [data-active-tab="Configuracion"] section:not(#vacaciones-section) h3,
+  body.dark [data-active-tab="Configuracion"] section .text-azul-blue,
+  body.dark [data-active-tab="Configuracion"] section .text-emerald-600\/70,
+  body.dark [data-active-tab="Configuracion"] section:not(#vacaciones-section) .text-azul-blue\/70 {
+    color: #ffffff !important;
+  }
+
+  /* PESTAÑA TABLAS SALARIALES */
+  body.dark [data-active-tab="Tablas"] button.bg-azul-blue {
+    background-color: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+  body.dark [data-active-tab="Tablas"] div.bg-azul-blue.shadow-azul-blue\/20 {
+    background-color: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+  body.dark [data-active-tab="Tablas"] div.bg-azul-blue.rounded-\[2rem\] {
+    background-color: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+
+  /* TABLA NIVELES SALARIALES - LÍNEAS HORIZONTALES ATENUADAS EN MODO OSCURO */
+  body.dark #tabla-niveles-salariales div[class*="border-b"],
+  body.dark #tabla-niveles-salariales div[class*="border-t"],
+  body.dark #tabla-niveles-salariales thead tr,
+  body.dark #tabla-niveles-salariales tbody tr,
+  body.dark #tabla-niveles-salariales tr[class*="border-b"],
+  body.dark #tabla-niveles-salariales th,
+  body.dark #tabla-niveles-salariales td,
+  body.dark #tabla-niveles-salariales .divide-y > :not([hidden]) ~ :not([hidden]),
+  body.dark #tabla-niveles-salariales .border-slate-50,
+  body.dark #tabla-niveles-salariales .border-slate-100,
+  body.dark [data-active-tab="Tablas"] #tabla-niveles-salariales div[class*="border-b"],
+  body.dark [data-active-tab="Tablas"] #tabla-niveles-salariales thead tr,
+  body.dark [data-active-tab="Tablas"] #tabla-niveles-salariales tbody tr,
+  body.dark [data-active-tab="Tablas"] #tabla-niveles-salariales .divide-y > :not([hidden]) ~ :not([hidden]) {
+    border-color: rgba(255, 255, 255, 0.025) !important;
+  }
+
+  /* PLUSES EN MODO OSCURO - LÍNEAS HORIZONTALES ATENUADAS AL FONDO */
+  body.dark .plus-card .border-t,
+  body.dark .plus-card .border-b,
+  body.dark .plus-card div[class*="border-t"],
+  body.dark .plus-card div[class*="border-b"],
+  body.dark [data-active-tab="Tablas"] .plus-card .border-t,
+  body.dark [data-active-tab="Tablas"] .plus-card div[class*="border-t"],
+  body.dark [data-active-tab="Tablas"] .space-y-8 div[class*="border-t"],
+  body.dark [data-active-tab="Tablas"] .border-t.border-slate-50,
+  body.dark [data-active-tab="Tablas"] .border-t.border-slate-100\/60,
+  body.dark [data-active-tab="Tablas"] .border-b.border-slate-50,
+  body.dark [data-active-tab="Tablas"] .divide-y > :not([hidden]) ~ :not([hidden]) {
+    border-color: rgba(255, 255, 255, 0.025) !important;
+  }
+
+  /* PESTAÑA TURNOS Y NÓMINA - LÍNEAS HORIZONTALES ATENUADAS EN TABLA DE DEVENGOS / PLUSES Y DEDUCCIONES */
+  body.dark #total-devengado-section div[class*="border-b"],
+  body.dark #total-devengado-section div[class*="border-t"],
+  body.dark #total-devengado-section tr[class*="border-b"],
+  body.dark #total-devengado-section tr[class*="border-t"],
+  body.dark #total-devengado-section thead tr,
+  body.dark #total-devengado-section tbody tr,
+  body.dark #total-devengado-section th,
+  body.dark #total-devengado-section td,
+  body.dark #deducciones-section div[class*="border-b"],
+  body.dark #deducciones-section div[class*="border-t"],
+  body.dark #deducciones-section tr[class*="border-b"],
+  body.dark #deducciones-section tr[class*="border-t"],
+  body.dark #deducciones-section thead tr,
+  body.dark #deducciones-section tbody tr,
+  body.dark #deducciones-section th,
+  body.dark #deducciones-section td,
+  body.dark [data-active-tab="Turnos"] #total-devengado-section div[class*="border-b"],
+  body.dark [data-active-tab="Turnos"] #total-devengado-section div[class*="border-t"],
+  body.dark [data-active-tab="Turnos"] #total-devengado-section tr,
+  body.dark [data-active-tab="Turnos"] #deducciones-section div[class*="border-b"],
+  body.dark [data-active-tab="Turnos"] #deducciones-section div[class*="border-t"],
+  body.dark [data-active-tab="Turnos"] #deducciones-section tr {
+    border-color: rgba(255, 255, 255, 0.025) !important;
+  }
+
+  /* PESTAÑA TURNOS Y NÓMINA */
+  body.dark [data-active-tab="Turnos"] div.bg-azul-blue.shadow-azul-blue\/30:not(.mini-hoy-badge) {
+    background-color: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+  body.dark [data-active-tab="Turnos"] div.from-azul-blue.to-azul-blue\/80,
+  body.dark #horas-totales-box,
+  body.dark .widget-shift-card-blue {
+    background: linear-gradient(135deg, #002266 0%, #00143d 100%) !important;
+    border: 2px solid #3b82f6 !important;
+    box-shadow: 0 4px 20px rgba(0, 51, 153, 0.35) !important;
+  }
+  body.dark [data-active-tab="Turnos"] div.from-emerald-400.to-teal-600,
+  body.dark #porcentaje-jornada-box,
+  body.dark .widget-shift-card-emerald {
+    background: linear-gradient(135deg, #064e3b 0%, #022c22 100%) !important;
+    border: 2px solid #10b981 !important;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3) !important;
+  }
+
+  /* BARRA DE PROGRESIÓN EN MODO OSCURO: VERDE ESMERALDA Y PISTA DISTINGUIBLE */
+  body.dark .proximo-turno-progress-bar {
+    background-color: #10b981 !important;
+    background: #10b981 !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.5) !important;
+  }
+  body.dark .proximo-turno-progress-track {
+    background-color: rgba(2, 44, 34, 0.8) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+  }
+
+  /* BARRA DE PROGRESIÓN SEGUNDA EMPRESA EN MODO OSCURO: NARANJA DE LA SEGUNDA EMPRESA */
+  body.dark .proximo-turno-progress-bar-second {
+    background-color: #f97316 !important;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+    box-shadow: 0 0 12px rgba(249, 115, 22, 0.5) !important;
+  }
+  body.dark .proximo-turno-progress-track-second {
+    background-color: rgba(67, 20, 7, 0.8) !important;
+    border-color: rgba(249, 115, 22, 0.5) !important;
+  }
+
+  /* MINI RECUADRO 'HOY' EN PESTAÑA TURNOS Y NÓMINA: FONDO AMARILLO Y LETRAS EN AZUL */
+  body.dark .mini-hoy-badge,
+  body.dark div.mini-hoy-badge,
+  body.dark span.mini-hoy-badge,
+  body.dark [data-active-tab="Turnos"] .mini-hoy-badge,
+  body.dark [data-active-tab="Turnos"] div.mini-hoy-badge,
+  body.dark [data-active-tab="Turnos"] span.mini-hoy-badge {
+    background-color: #FFD700 !important;
+    background: #FFD700 !important;
+    color: #003399 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  body.dark .mini-hoy-badge span,
+  body.dark div.mini-hoy-badge span,
+  body.dark [data-active-tab="Turnos"] .mini-hoy-badge span {
+    color: #003399 !important;
+  }
+
+  /* MODO OSCURO - DÍA 'HOY' EN EL CALENDARIO: DESTELLO AMARILLO EN LUGAR DE AZUL */
+  body.dark button.day-cell-today,
+  body.dark [data-active-tab="Turnos"] button.day-cell-today {
+    background-color: rgba(255, 215, 0, 0.12) !important;
+    background: rgba(255, 215, 0, 0.12) !important;
+    --tw-ring-color: #FFD700 !important;
+    box-shadow: inset 0 0 0 1.5px rgba(255, 215, 0, 0.6) !important;
+  }
+
+  /* TURNO DE VACACIONES Y MINI PÍLDORA VAC EN MODO OSCURO: FONDO AMARILLO Y HORARIO/TEXTO EN AZUL MARINO (#003399) */
+  body.dark .shift-pill-vacaciones,
+  body.dark div.shift-pill-vacaciones,
+  body.dark [data-active-tab="Turnos"] .shift-pill-vacaciones,
+  body.dark [data-active-tab="Turnos"] div.shift-pill-vacaciones {
+    background-color: #FFD700 !important;
+    background: #FFD700 !important;
+    border-color: rgba(0, 51, 153, 0.25) !important;
+  }
+  body.dark .shift-pill-vacaciones span,
+  body.dark .shift-pill-vacaciones .vac-time-start,
+  body.dark .shift-pill-vacaciones .vac-time-end,
+  body.dark [data-active-tab="Turnos"] .shift-pill-vacaciones span,
+  body.dark [data-active-tab="Turnos"] .shift-pill-vacaciones .vac-time-start,
+  body.dark [data-active-tab="Turnos"] .shift-pill-vacaciones .vac-time-end {
+    color: #003399 !important;
+  }
+
+  body.dark .vac-badge,
+  body.dark span.vac-badge,
+  body.dark [data-active-tab="Turnos"] .vac-badge,
+  body.dark [data-active-tab="Turnos"] span.vac-badge {
+    background-color: #FFD700 !important;
+    background: #FFD700 !important;
+    color: #003399 !important;
+  }
+
+  /* BOTÓN 'COMPARTIR TURNOS DEL MES': ICONO Y TEXTO EN BLANCO EN MODO OSCURO */
+  body.dark #btn-compartir-turnos-mes,
+  body.dark .btn-compartir-turnos-mes,
+  body.dark [data-active-tab="Turnos"] #btn-compartir-turnos-mes {
+    color: #ffffff !important;
+  }
+  body.dark #btn-compartir-turnos-mes svg,
+  body.dark .btn-compartir-turnos-mes svg,
+  body.dark [data-active-tab="Turnos"] #btn-compartir-turnos-mes svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+  }
+  body.dark #btn-compartir-turnos-mes span,
+  body.dark .btn-compartir-turnos-mes span,
+  body.dark [data-active-tab="Turnos"] #btn-compartir-turnos-mes span {
+    color: #ffffff !important;
+  }
+
+  /* TÍTULO SECCIÓN 'NÓMINA' EN MODO OSCURO: ESTILO BOTÓN 'VER GRÁFICO ANUAL' CON BORDE FINO AZUL E ICONO AMARILLO */
+  body.dark #nomina-header-pill,
+  body.dark .nomina-header-pill,
+  body.dark [data-active-tab="Turnos"] #nomina-header-pill {
+    background-color: rgba(0, 51, 153, 0.15) !important;
+    background: rgba(0, 51, 153, 0.15) !important;
+    border: 1px solid rgba(96, 165, 250, 0.4) !important;
+    box-shadow: none !important;
+  }
+  body.dark #nomina-header-pill h2,
+  body.dark .nomina-header-pill h2,
+  body.dark [data-active-tab="Turnos"] #nomina-header-pill h2 {
+    color: #60a5fa !important;
+  }
+  body.dark #nomina-header-pill svg,
+  body.dark .nomina-header-pill svg,
+  body.dark [data-active-tab="Turnos"] #nomina-header-pill svg {
+    color: #FFD700 !important;
+    stroke: #FFD700 !important;
+  }
+
+  /* AVISO DE DESCANSO LEGAL ENTRE JORNADAS EN VENTANA DETALLE DEL DÍA: DESCRIPCIÓN DARK:TEXT-ROSE-400 */
+  body.dark #aviso-descanso-legal-modal p,
+  body.dark #aviso-descanso-legal-modal p span {
+    color: #fb7185 !important;
+  }
+
+  body.dark #detalles-dia-modal {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #detalles-dia-modal > div:first-child {
+    background-color: #0f172a !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  /* CONTENEDOR 'DÍA FESTIVO' EN VENTANA 'DETALLE DEL DÍA' EN MODO OSCURO:
+     COLORES DE LA SECCIÓN FESTIVOS DE CONFIGURACIÓN */
+  body.dark #detalles-dia-modal #modal-dia-festivo-container,
+  body.dark #modal-dia-festivo-container {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1.5px solid rgba(16, 185, 129, 0.4) !important;
+    color: #ffffff !important;
+  }
+  body.dark #modal-dia-festivo-container p.text-slate-800 {
+    color: #10b981 !important;
+  }
+  body.dark #modal-dia-festivo-container p.text-slate-400 {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+  body.dark #modal-dia-festivo-container div.bg-emerald-100,
+  body.dark #modal-dia-festivo-container div.bg-slate-100 {
+    background-color: #020617 !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    color: #10b981 !important;
+  }
+  body.dark #modal-dia-festivo-container div.bg-emerald-100 svg,
+  body.dark #modal-dia-festivo-container div.bg-slate-100 svg {
+    color: #10b981 !important;
+  }
+
+  /* Badge 'Día Festivo' en cabecera del modal */
+  body.dark #detalles-dia-modal span.bg-emerald-50 {
+    background-color: #0f172a !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    color: #10b981 !important;
+  }
+
+  /* CONTENEDORES 'HORARIOS Y JORNADA' Y 'DESGLOSE DE CONCEPTOS' EN VENTANA 'DETALLE DEL DÍA' EN MODO OSCURO:
+     MISMO COLOR DE FONDO (#1e293b) Y BORDE (#334155) QUE LOS BOTONES SUPERIORES (COPIAR, PEGAR, CAMBIO DE TURNO...) */
+  body.dark #detalles-dia-modal #horarios-jornada-section div.rounded-2xl,
+  body.dark #detalles-dia-modal #horarios-jornada-section > div > div,
+  body.dark #detalles-dia-modal #desglose-conceptos-section div.rounded-2xl,
+  body.dark #detalles-dia-modal #desglose-conceptos-section > div > div,
+  body.dark #horarios-jornada-section div.rounded-2xl,
+  body.dark #desglose-conceptos-section div.rounded-2xl {
+    background-color: #1e293b !important;
+    background: #1e293b !important;
+    border-color: #334155 !important;
+  }
+  body.dark #detalles-dia-modal #horarios-jornada-section div.rounded-2xl:hover,
+  body.dark #detalles-dia-modal #desglose-conceptos-section div.rounded-2xl:hover {
+    background-color: #243347 !important;
+    background: #243347 !important;
+  }
+  body.dark #detalles-dia-modal #horarios-jornada-section .text-slate-800 {
+    color: #f8fafc !important;
+  }
+  body.dark #detalles-dia-modal #horarios-jornada-section span.bg-slate-100 {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #94a3b8 !important;
+  }
+
+  /* Desglose de Conceptos: contraste de textos y valores en modo oscuro sobre #1e293b */
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-indigo-700 { color: #c7d2fe !important; }
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-amber-700 { color: #fde68a !important; }
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-rose-700 { color: #fecdd3 !important; }
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-emerald-700 { color: #a7f3d0 !important; }
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-purple-700 { color: #f3e8ff !important; }
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-sky-800 { color: #bae6fd !important; }
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-orange-700 { color: #fed7aa !important; }
+  body.dark #detalles-dia-modal #desglose-conceptos-section .text-slate-700 { color: #e2e8f0 !important; }
+
+  /* Input containers inside edit mode */
+  body.dark #detalles-dia-modal div.bg-slate-50:not(#horarios-jornada-section *):not(#desglose-conceptos-section *):not(#modal-dia-festivo-container) {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* TARJETAS DE PLUSES EN PESTAÑA TURNOS Y NÓMINA (MODO OSCURO):
+     Mismo fondo y borde que en 'desglose de conceptos' (#1e293b / #334155),
+     con títulos y cantidades (cuando no hay mini píldoras SUB/CON) de los mismos colores */
+  body.dark #resumen-pluses-grid .plus-card-item,
+  body.dark #extra-hours-grid .plus-card-item {
+    background-color: #1e293b !important;
+    background: #1e293b !important;
+    border-color: #334155 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-card-item:hover,
+  body.dark #extra-hours-grid .plus-card-item:hover {
+    background-color: #243347 !important;
+    background: #243347 !important;
+  }
+
+  /* Nocturnas: título #818cf8, valor #c7d2fe */
+  body.dark #resumen-pluses-grid .plus-type-nocturnas .plus-card-title {
+    color: #818cf8 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-nocturnas .plus-card-value {
+    color: #c7d2fe !important;
+  }
+
+  /* Madrugues: título #fbbf24, valor #fde68a */
+  body.dark #resumen-pluses-grid .plus-type-madrugues .plus-card-title {
+    color: #fbbf24 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-madrugues .plus-card-value {
+    color: #fde68a !important;
+  }
+
+  /* Domingos: título #f87171, valor #fecdd3 */
+  body.dark #resumen-pluses-grid .plus-type-domingos .plus-card-title {
+    color: #f87171 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-domingos .plus-card-value {
+    color: #fecdd3 !important;
+  }
+
+  /* Festivos: título #34d399, valor #a7f3d0 */
+  body.dark #resumen-pluses-grid .plus-type-festivos .plus-card-title {
+    color: #34d399 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-festivos .plus-card-value {
+    color: #a7f3d0 !important;
+  }
+
+  /* Fraccionadas: título #94a3b8, valor #e2e8f0 */
+  body.dark #resumen-pluses-grid .plus-type-fraccionadas .plus-card-title {
+    color: #94a3b8 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-fraccionadas .plus-card-value {
+    color: #e2e8f0 !important;
+  }
+
+  /* Transporte: título #93c5fd, valor #60a5fa */
+  body.dark #resumen-pluses-grid .plus-type-transporte .plus-card-title {
+    color: #93c5fd !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-transporte .plus-card-value {
+    color: #60a5fa !important;
+  }
+
+  /* Manutención: título #fb923c, valor #fed7aa */
+  body.dark #resumen-pluses-grid .plus-type-manutencion .plus-card-title {
+    color: #fb923c !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-manutencion .plus-card-value {
+    color: #fed7aa !important;
+  }
+
+  /* Turnicidad / Horas Mes: título #94a3b8, valor #e2e8f0 */
+  body.dark #resumen-pluses-grid .plus-type-turnicidad .plus-card-title,
+  body.dark #resumen-pluses-grid .plus-type-horasmes .plus-card-title {
+    color: #94a3b8 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-turnicidad .plus-card-value,
+  body.dark #resumen-pluses-grid .plus-type-horasmes .plus-card-value {
+    color: #e2e8f0 !important;
+  }
+
+  /* A Compensar: título #38bdf8, valor #bae6fd */
+  body.dark #resumen-pluses-grid .plus-type-compensar .plus-card-title {
+    color: #38bdf8 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-compensar .plus-card-value {
+    color: #bae6fd !important;
+  }
+
+  /* Vacaciones: título #fbbf24, valor #fde68a */
+  body.dark #resumen-pluses-grid .plus-type-vacaciones .plus-card-title {
+    color: #fbbf24 !important;
+  }
+  body.dark #resumen-pluses-grid .plus-type-vacaciones .plus-card-value {
+    color: #fde68a !important;
+  }
+
+  /* Horas Perentorias / Complementarias (extra hours en el cuadrante): título #c084fc, valor #f3e8ff */
+  body.dark #extra-hours-grid .plus-type-extra .plus-card-title {
+    color: #c084fc !important;
+  }
+  body.dark #extra-hours-grid .plus-type-extra .plus-card-value,
+  body.dark #extra-hours-grid .plus-type-extra .plus-card-unit {
+    color: #f3e8ff !important;
+  }
+
+  /* Plantillas rápidas en modo oscuro: mismo diseño de colores que el contenedor donde se introducen los turnos */
+  body.dark #plantillas-rapidas-box {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  body.dark #plantillas-rapidas-box > button:hover {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+  }
+  body.dark #plantillas-rapidas-box .border-t {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  body.dark #plantillas-rapidas-box button.bg-white {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  body.dark #plantillas-rapidas-box button.bg-white:hover {
+    background-color: #1e293b !important;
+  }
+  body.dark #plantillas-rapidas-box div.bg-white {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #plantillas-rapidas-box input.bg-slate-50 {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  body.dark #plantillas-rapidas-box span.bg-slate-100 {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #94a3b8 !important;
+  }
+  body.dark #plantillas-rapidas-box span.bg-white {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
+  }
+
+  /* Perentorias/Complementarias (y noc) in day details modal: matching background #1e293b */
+  body.dark #detalles-dia-modal div.bg-purple-50\/30 {
+    background-color: #1e293b !important;
+    background: #1e293b !important;
+    border-color: #334155 !important;
+  }
+  body.dark #detalles-dia-modal div.bg-purple-50\/30 span,
+  body.dark #detalles-dia-modal div.bg-purple-50\/30 p,
+  body.dark #detalles-dia-modal div.bg-purple-50\/30 div {
+    color: #f3e8ff !important;
+  }
+  body.dark #detalles-dia-modal div.bg-purple-50\/30 .text-purple-700 {
+    color: #ffffff !important;
+  }
+
+  /* PESTAÑA HERRAMIENTAS */
+  body.dark [data-active-tab="Herramientas"] h2,
+  body.dark [data-active-tab="Herramientas"] h3 {
+    color: #ffffff !important;
+  }
+  body.dark [data-active-tab="Herramientas"] span.text-\[\#0f172a\] {
+    color: #ffffff !important;
+  }
+  body.dark [data-active-tab="Herramientas"] button[id^="btn-capitulo"] {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark [data-active-tab="Herramientas"] button[id^="btn-capitulo"]:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  body.dark [data-active-tab="Herramientas"] div.bg-purple-50\/60.border-purple-100 {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(168, 85, 247, 0.4) !important;
+  }
+  body.dark [data-active-tab="Herramientas"] div.space-y-3.p-3.bg-slate-50\/60 {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Calendario de rotaciones - Dark Mode contrast optimization */
+  body.dark #calendario-rotaciones-card {
+    background-color: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #calendario-rotaciones-card h2,
+  body.dark #calendario-rotaciones-card h4 {
+    color: #ffffff !important;
+  }
+  body.dark #calendario-rotaciones-card span.text-slate-400 {
+    color: #94a3b8 !important;
+  }
+
+  /* Baja laboral / Enfermedad común & Recomendador IRPF Anual - Dark Mode */
+  body.dark #baja-laboral-card,
+  body.dark #irpf-recommender-card {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+  }
+  body.dark #baja-laboral-card h3,
+  body.dark #baja-laboral-card h4,
+  body.dark #irpf-recommender-card h3,
+  body.dark #irpf-recommender-card h4 {
+    color: #ffffff !important;
+  }
+  body.dark #baja-laboral-card input,
+  body.dark #irpf-recommender-card input {
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    color-scheme: dark !important;
+  }
+  body.dark #baja-laboral-card input::placeholder,
+  body.dark #irpf-recommender-card input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+  body.dark #baja-laboral-card .bg-slate-50\/70,
+  body.dark #baja-laboral-card .bg-slate-50\/60,
+  body.dark #irpf-recommender-card .bg-slate-50\/70,
+  body.dark #irpf-recommender-card .bg-slate-50\/60,
+  body.dark #irpf-recommender-card .bg-slate-50\/80 {
+    background-color: rgba(2, 6, 23, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  body.dark #baja-laboral-card button.bg-slate-50,
+  body.dark #irpf-recommender-card button.bg-slate-50 {
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #baja-laboral-card div.bg-white:not([class*="bg-white/"]),
+  body.dark #irpf-recommender-card div.bg-white:not([class*="bg-white/"]),
+  body.dark #baja-laboral-card button.bg-white:not([class*="bg-white/"]),
+  body.dark #irpf-recommender-card button.bg-white:not([class*="bg-white/"]) {
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* PESTAÑA CONFIGURACIÓN ADICIONALES */
+  /* En Tipo de contrato y progresión de Nivel en el modo oscuro, todo lo que está de color amarillo ponlo de color azul oscuro */
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue .text-azul-yellow,
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue .text-azul-yellow\/70,
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue .text-azul-yellow\/50 {
+    color: #003399 !important;
+  }
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue .bg-azul-yellow {
+    background-color: #003399 !important;
+  }
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue .border-azul-yellow {
+    border-color: #003399 !important;
+  }
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue .shadow-azul-yellow\/20 {
+    box-shadow: 0 4px 12px rgba(0, 51, 153, 0.3) !important;
+  }
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue .bg-azul-yellow\/20 {
+    background-color: rgba(0, 51, 153, 0.2) !important;
+  }
+  body.dark [data-active-tab="Configuracion"] section.bg-azul-blue button.bg-azul-yellow {
+    background-color: #003399 !important;
+    color: #ffffff !important;
+    border-color: #003399 !important;
+  }
+
+  /* En el modo oscuro del recuadro Tipo de contrato, invierte los colores entre el fondo y el color de los botones */
+  body.dark #tipo-contrato-section {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  body.dark #tipo-contrato-section .text-azul-yellow {
+    color: #FFD700 !important;
+  }
+  body.dark #tipo-contrato-section button {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  body.dark #tipo-contrato-section button:hover {
+    color: #ffffff !important;
+  }
+  body.dark #tipo-contrato-section button.bg-white {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+  body.dark #tipo-contrato-section button.bg-azul-yellow {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    color: #FFD700 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+  body.dark #tipo-contrato-section button.bg-white\/20 {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* PROGRESION DE NIVEL SECTION DARK MODE */
+  body.dark #progresion-nivel-section {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  body.dark #progresion-nivel-section .text-azul-yellow,
+  body.dark #progresion-nivel-section .text-azul-yellow\/70,
+  body.dark #progresion-nivel-section .text-azul-yellow\/50 {
+    color: #FFD700 !important;
+  }
+  body.dark #progresion-nivel-section .bg-azul-yellow {
+    background-color: #FFD700 !important;
+  }
+  body.dark #progresion-nivel-section .border-azul-yellow {
+    border-color: #FFD700 !important;
+  }
+  body.dark #progresion-nivel-section .bg-white\/10 {
+    background-color: rgba(2, 6, 23, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #progresion-nivel-section input {
+    color: #ffffff !important;
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #progresion-nivel-section .bg-white\/20 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #progresion-nivel-section .bg-white\/10.rounded-full {
+    background-color: rgba(2, 6, 23, 0.6) !important;
+  }
+
+  /* FESTIVOS SECTION DARK MODE */
+  body.dark #festivos-section {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1.5px solid rgba(16, 185, 129, 0.4) !important;
+    color: #ffffff !important;
+  }
+  body.dark #festivos-section h3 {
+    color: #10b981 !important;
+  }
+  body.dark #festivos-section input[type="date"] {
+    background-color: #020617 !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #ffffff !important;
+  }
+  body.dark #festivos-section button.bg-emerald-500 {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1.5px solid rgba(16, 185, 129, 0.4) !important;
+    color: #10b981 !important;
+  }
+  body.dark #festivos-section button.bg-emerald-500:hover {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+  }
+  body.dark #festivos-section .text-emerald-800,
+  body.dark #festivos-section .text-emerald-600,
+  body.dark #festivos-section .text-emerald-600\/70 {
+    color: #10b981 !important;
+  }
+  body.dark #festivos-section .border-emerald-100\/60,
+  body.dark #festivos-section .border-emerald-100 {
+    border-color: rgba(16, 185, 129, 0.2) !important;
+  }
+  body.dark #festivos-section .bg-white\/40 {
+    background-color: rgba(2, 6, 23, 0.4) !important;
+  }
+  body.dark #festivos-section .bg-white\/60 {
+    background-color: #020617 !important;
+  }
+  body.dark #festivos-section .bg-white\/60:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  body.dark #festivos-section .group.flex.items-center {
+    background-color: #020617 !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #ffffff !important;
+  }
+  body.dark #festivos-section .group.flex.items-center button {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+  body.dark #festivos-section .group.flex.items-center button:hover {
+    color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+  }
+  body.dark #festivos-section span.bg-white {
+    background-color: #020617 !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #10b981 !important;
+  }
+
+  /* VACACIONES SECTION DARK MODE */
+  body.dark #vacaciones-section {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  body.dark #vacaciones-section h3,
+  body.dark #vacaciones-section .vacaciones-title,
+  body.dark #vacaciones-section h3.vacaciones-title,
+  body.dark [data-active-tab="Configuracion"] #vacaciones-section h3,
+  body.dark [data-active-tab="Configuracion"] #vacaciones-section .vacaciones-title,
+  body.dark [data-active-tab="Configuracion"] .vacaciones-title {
+    color: #FFD700 !important;
+  }
+  body.dark #vacaciones-section .w-10.h-10,
+  body.dark #vacaciones-section .w-10.h-10 svg {
+    color: #FFD700 !important;
+    background-color: #020617 !important;
+  }
+  body.dark #vacaciones-section .text-azul-blue {
+    color: #ffffff !important;
+  }
+  body.dark #vacaciones-section .text-azul-blue\/70:not(.vacaciones-title):not(h3),
+  body.dark #vacaciones-section .text-azul-blue\/40 {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  body.dark #vacaciones-section .bg-azul-blue {
+    background-color: #020617 !important;
+    color: #ffffff !important;
+  }
+  body.dark #vacaciones-form-box {
+    background: transparent !important;
+    border: none !important;
+  }
+  body.dark #vacaciones-form-box .bg-white\/30 {
+    background-color: rgba(2, 6, 23, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #vacaciones-form-box button {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+  body.dark #vacaciones-form-box button:hover {
+    color: #ffffff !important;
+  }
+  body.dark #vacaciones-form-box button.bg-azul-blue {
+    background-color: #020617 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #vacaciones-form-box input[type="date"] {
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  body.dark #vacaciones-form-box button.w-full,
+  body.dark #vacaciones-form-box button.p-3\.5 {
+    background-color: #020617 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #vacaciones-form-box button.w-full:hover,
+  body.dark #vacaciones-form-box button.p-3\.5:hover {
+    background-color: rgba(2, 6, 23, 0.7) !important;
+  }
+  body.dark #vacaciones-section .border-white\/20 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #vacaciones-section .bg-white\/20 {
+    background-color: rgba(2, 6, 23, 0.4) !important;
+  }
+  body.dark #vacaciones-section .bg-white\/30 {
+    background-color: #020617 !important;
+  }
+  body.dark #vacaciones-section .bg-white\/30:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  body.dark #vacaciones-section .bg-white\/10 {
+    background-color: rgba(2, 6, 23, 0.3) !important;
+  }
+  body.dark #vacaciones-section .group.flex.items-center.bg-white {
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  body.dark #vacaciones-section .group.flex.items-center.bg-white button {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+  body.dark #vacaciones-section .group.flex.items-center.bg-white button:hover {
+    color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+  }
+  body.dark #vacaciones-section span.bg-azul-blue {
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+
+  /* PUNTUACIÓN VACACIONES SECTION DARK MODE - ESTILO PROGRESIÓN DE NIVEL */
+  body.dark #puntuacion-vacaciones-section {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  /* Título, subtítulos, etiquetas y acentos en amarillo #FFD700 (estilo Progresión de Nivel) */
+  body.dark #puntuacion-vacaciones-section h3,
+  body.dark #puntuacion-vacaciones-section h4,
+  body.dark #puntuacion-vacaciones-section .text-azul-blue\/70,
+  body.dark #puntuacion-vacaciones-section label {
+    color: #FFD700 !important;
+  }
+
+  /* Letras y números principales en blanco */
+  body.dark #puntuacion-vacaciones-section,
+  body.dark #puntuacion-vacaciones-section .text-azul-blue,
+  body.dark #puntuacion-vacaciones-section span.text-azul-blue,
+  body.dark #puntuacion-vacaciones-section span.font-black,
+  body.dark #puntuacion-vacaciones-section .text-2xl,
+  body.dark #puntuacion-vacaciones-section p {
+    color: #ffffff !important;
+  }
+
+  body.dark #puntuacion-vacaciones-section .text-azul-blue\/60,
+  body.dark #puntuacion-vacaciones-section .text-azul-blue\/50 {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  /* Icono principal en cabecera: fondo amarillo #FFD700 e icono azul oscuro */
+  body.dark #puntuacion-vacaciones-section .w-10.h-10.bg-azul-blue {
+    background-color: #FFD700 !important;
+    color: #020617 !important;
+  }
+
+  /* Selector de año */
+  body.dark #puntuacion-vacaciones-section .bg-white\/40 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+
+  body.dark #puntuacion-vacaciones-section .bg-azul-blue\/10 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+
+  body.dark #puntuacion-vacaciones-section .bg-azul-blue\/10:hover {
+    background-color: rgba(255, 215, 0, 0.2) !important;
+    color: #FFD700 !important;
+  }
+
+  /* Botón principal de los puntos (ancho completo) y desplegable */
+  body.dark #puntuacion-vacaciones-section button.w-full.bg-azul-blue {
+    background-color: rgba(2, 6, 23, 0.85) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  body.dark #puntuacion-vacaciones-section button.w-full.bg-azul-blue:hover {
+    background-color: rgba(2, 6, 23, 0.95) !important;
+    border-color: rgba(255, 215, 0, 0.4) !important;
+  }
+  body.dark #puntuacion-vacaciones-section button.w-full.bg-azul-blue .text-2xl,
+  body.dark #puntuacion-vacaciones-section button.w-full.bg-azul-blue .text-3xl {
+    color: #FFD700 !important;
+  }
+  body.dark #puntuacion-vacaciones-section button.w-full.bg-azul-blue span.text-white\/80 {
+    color: #FFD700 !important;
+  }
+
+  /* Recuadro final de puntuación media */
+  body.dark #puntuacion-vacaciones-section div.bg-azul-blue.shadow-lg {
+    background-color: rgba(2, 6, 23, 0.8) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  body.dark #puntuacion-vacaciones-section div.bg-azul-blue.shadow-lg .text-2xl {
+    color: #FFD700 !important;
+  }
+  body.dark #puntuacion-vacaciones-section div.bg-azul-blue.shadow-lg span.text-white\/70 {
+    color: #FFD700 !important;
+  }
+
+  /* Cajas interiores de las subsecciones desplegables */
+  body.dark #puntuacion-vacaciones-section .bg-white\/25,
+  body.dark #puntuacion-vacaciones-section .bg-white\/10 {
+    background-color: rgba(2, 6, 23, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  body.dark #puntuacion-vacaciones-section .border-white\/20,
+  body.dark #puntuacion-vacaciones-section .border-white\/15,
+  body.dark #puntuacion-vacaciones-section .border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Cajas de cada período y filas de vacaciones */
+  body.dark #puntuacion-vacaciones-section .bg-white\/40,
+  body.dark #puntuacion-vacaciones-section .bg-white\/30 {
+    background-color: rgba(2, 6, 23, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #puntuacion-vacaciones-section .bg-white\/40:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* Inputs estilo progresión de nivel */
+  body.dark #puntuacion-vacaciones-section input {
+    color: #ffffff !important;
+    background-color: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  body.dark #puntuacion-vacaciones-section input:focus {
+    border-color: #FFD700 !important;
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2) !important;
+  }
+  body.dark #puntuacion-vacaciones-section input:disabled {
+    background-color: rgba(2, 6, 23, 0.5) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* Casilla de verificación para editar número de días en modo oscuro */
+  body.dark #puntuacion-vacaciones-section .custom-checkbox-active {
+    background-color: #FFD700 !important;
+    border-color: #FFD700 !important;
+    color: #020617 !important;
+  }
+  body.dark #puntuacion-vacaciones-section .custom-checkbox-inactive {
+    background-color: rgba(2, 6, 23, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  /* Distintivo de puntos por día en lista de vacaciones */
+  body.dark #puntuacion-vacaciones-section .text-right span.border {
+    background-color: rgba(255, 215, 0, 0.15) !important;
+    border-color: rgba(255, 215, 0, 0.3) !important;
+    color: #FFD700 !important;
+  }
+
+  /* Bonus festivos pill */
+  body.dark #puntuacion-vacaciones-section span.bg-azul-blue {
+    background-color: #FFD700 !important;
+    color: #020617 !important;
+  }
+
+  /* Botones de edición y tarjetas de meses en modo oscuro */
+  body.dark #puntuacion-vacaciones-section .btn-editar-periodos {
+    background-color: rgba(2, 6, 23, 0.85) !important;
+    border-color: rgba(255, 215, 0, 0.4) !important;
+    color: #FFD700 !important;
+  }
+  body.dark #puntuacion-vacaciones-section .btn-restablecer-periodos {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  body.dark #puntuacion-vacaciones-section .btn-guardar-periodos {
+    background-color: #059669 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+  }
+  body.dark #puntuacion-vacaciones-section .month-card-edit {
+    background-color: rgba(2, 6, 23, 0.75) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+  body.dark #puntuacion-vacaciones-section .month-preset-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  body.dark #puntuacion-vacaciones-section .month-preset-btn:hover {
+    background-color: rgba(255, 215, 0, 0.2) !important;
+    border-color: #FFD700 !important;
+    color: #FFD700 !important;
+  }
+
+  /* El fondo de 'festivos fijos' del mismo color que el fondo de la pestaña y manteniendo el color del borde */
+  body.dark #festivos-fijos-box {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+  }
+  /* En el modo oscuro en vacaciones, en el cuadro de añadir tramo, pon en amarillo todas las letras y los iconos */
+  body.dark #vacaciones-form-box,
+  body.dark #vacaciones-form-box * {
+    color: #FFD700 !important;
+  }
+  body.dark #vacaciones-form-box .date-range-picker-calendar {
+    background-color: rgba(2, 6, 23, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  body.dark #vacaciones-form-box .date-range-summary-pill,
+  body.dark #vacaciones-form-box .date-range-select {
+    background-color: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+  body.dark #vacaciones-form-box .date-range-day-cap-vacaciones,
+  body.dark #vacaciones-form-box .date-range-day-cap-vacaciones * {
+    background-color: #FFD700 !important;
+    color: #020617 !important;
+  }
+  body.dark #vacaciones-form-box .date-range-day-inrange-vacaciones,
+  body.dark #vacaciones-form-box .date-range-day-inrange-vacaciones * {
+    background-color: rgba(255, 215, 0, 0.2) !important;
+    color: #FFD700 !important;
+  }
+
+  /* PESTAÑA TURNOS Y NÓMINA ADICIONALES */
+  body.dark #selector-mes-container,
+  body.dark #horas-totales-box {
+    background-color: #030f26 !important;
+    background: #030f26 !important;
+    border: 1.5px solid #3b82f6 !important;
+  }
+  body.dark #porcentaje-jornada-box {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    background: rgba(16, 185, 129, 0.15) !important;
+    border: 1.5px solid rgba(16, 185, 129, 0.3) !important;
+  }
+  /* Las tarjetas resumen de los pluses ponlas con el mismo fondo oscuro de la pestaña */
+  body.dark #resumen-pluses-grid > div {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+  body.dark #resumen-pluses-grid > div span,
+  body.dark #resumen-pluses-grid > div p,
+  body.dark #resumen-pluses-grid > div div {
+    color: #ffffff !important;
+  }
+  body.dark #resumen-pluses-grid > div .text-amber-600 {
+    color: #f59e0b !important;
+  }
+  body.dark #resumen-pluses-grid > div .text-white {
+    color: #ffffff !important;
+  }
+  body.dark #extra-hours-grid > div {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+  }
+  /* Asegurar transparencia e igualdad total para cajas de Nivel e IRPF tanto en modo claro como oscuro */
+  #payroll-nivel-salarial-box select,
+  #payroll-irpf-box input {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  body.dark #payroll-nivel-salarial-box select,
+  body.dark #payroll-irpf-box input {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+  }
+  body.dark #payroll-nivel-salarial-box option {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+  }
+
+  /* PESTAÑA RESUMEN ADICIONALES */
+  #pluses-anuales-box {
+    border: none !important;
+  }
+  #pluses-anuales-toggle-btn:focus,
+  #pluses-anuales-toggle-btn:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  /* En el modo oscuro de la pestaña Resumen: el cuadro 'Pluses generados en el año' ponlo con el mismo fondo que el de la pestaña (el botón desplegable y el recuadro de los importes) */
+  body.dark #pluses-anuales-toggle-btn {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  body.dark #pluses-anuales-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  body.dark #pluses-anuales-toggle-btn span {
+    color: #ffffff !important;
+  }
+  body.dark #pluses-anuales-box {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: none !important;
+  }
+  /* En el modo oscuro de la pestaña Resumen: el fondo de los importes de pluses generados en el año del mismo color que el contenedor total horas realizadas (#0f172a) */
+  body.dark .pluses-anuales-item {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  body.dark .pluses-anuales-item span {
+    color: #ffffff !important;
+  }
+  body.dark .pluses-anuales-item .text-slate-400 {
+    color: #94a3b8 !important;
+  }
+  body.dark .pluses-anuales-item .pluses-anuales-importe,
+  body.dark .pluses-anuales-importe {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #a5b4fc !important;
+  }
+
+  /* TABLAS CONVENIO Y CREAR NUEVO PLUS DARK MODE OVERRIDES */
+  body.dark #tablas-convenio-btn {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #tablas-convenio-btn .text-azul-yellow {
+    color: #3b82f6 !important;
+  }
+  body.dark #convenio-year-picker {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #convenio-year-picker .text-azul-yellow {
+    color: #3b82f6 !important;
+  }
+  body.dark #selector-colectivo-convenio {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #selector-colectivo-convenio .colectivo-option-btn {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  body.dark #selector-colectivo-convenio .colectivo-option-btn:hover {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  body.dark #selector-colectivo-convenio .colectivo-option-active {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #60a5fa !important;
+  }
+  body.dark #selector-colectivo-convenio .colectivo-toggle-track {
+    background-color: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  body.dark #selector-colectivo-convenio .colectivo-toggle-track.is-pasaje {
+    background-color: #2563eb !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+  body.dark #selector-colectivo-convenio .colectivo-toggle-thumb {
+    background-color: #ffffff !important;
+  }
+  body.dark #crear-nuevo-plus-btn {
+    border: 1.5px solid #3b82f6 !important;
+  }
+
+  /* Fondos de los iconos de las tarjetas de Tablas Salariales */
+  body.dark #tablas-quick-stats .text-azul-blue {
+    background-color: #0f172a !important;
+    border: 1px solid #60a5fa !important;
+    color: #60a5fa !important;
+  }
+  body.dark #tablas-quick-stats .text-amber-500 {
+    background-color: #0f172a !important;
+    border: 1px solid #fde047 !important;
+    color: #fde047 !important;
+  }
+  body.dark #tablas-quick-stats .text-emerald-500 {
+    background-color: #0f172a !important;
+    border: 1px solid #34d399 !important;
+    color: #34d399 !important;
+  }
+  body.dark #tablas-quick-stats .text-purple-600,
+  body.dark #precio-especial-complementarias-box .text-purple-600 {
+    background-color: #0f172a !important;
+    border: 1px solid #c084fc !important;
+    color: #c084fc !important;
+  }
+
+  /* Interruptores de la pestaña Tablas Salariales */
+  body.dark [data-active-tab="Tablas"] button.inline-flex.rounded-full.bg-slate-300 {
+    background-color: #475569 !important; /* gris deseleccionado */
+  }
+  body.dark [data-active-tab="Tablas"] button.inline-flex.rounded-full.bg-emerald-500,
+  body.dark [data-active-tab="Tablas"] button.inline-flex.rounded-full.bg-azul-blue {
+    background-color: #10b981 !important; /* verde seleccionado */
+  }
+
+  /* Cuadro % de jornada */
+  body.dark #porcentaje-jornada-box {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    border: 1.5px solid rgba(16, 185, 129, 0.5) !important; /* mismo verde de liquido a percibir */
+  }
+
+  /* Etiquetas resumen perentorias/complementarias y perentorias noc/complementarias noc */
+  body.dark #extra-hours-grid > div {
+    background-color: rgba(147, 51, 234, 0.25) !important; /* fondo morado suave */
+    border: 1px solid rgba(168, 85, 247, 0.6) !important; /* borde morado fino */
+  }
+  body.dark #extra-hours-grid > div span,
+  body.dark #extra-hours-grid > div div,
+  body.dark #extra-hours-grid > div p {
+    color: #f3e8ff !important; /* letras morado muy claro / blanco */
+  }
+  body.dark #extra-hours-grid > div span.text-purple-600 {
+    color: #ffffff !important; /* número en blanco puro */
+  }
+
+  /* Ventana detalle de día footer buttons container */
+  body.dark #detalles-dia-modal-footer {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #detalles-dia-modal-footer button.bg-white {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  body.dark #detalles-dia-modal-footer button.bg-azul-blue {
+    background-color: #3b82f6 !important;
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+  }
+
+  /* Botón de regreso al día de hoy */
+  body.dark #volver-hoy-btn {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: 1px solid #fde047 !important; /* fino amarillo (slate-yellow / yellow-300) */
+    color: #fde047 !important;
+    box-shadow: none !important;
+  }
+  body.dark #volver-hoy-btn span {
+    color: #fde047 !important;
+  }
+
+  /* Icono Tipo de contrato */
+  body.dark #tipo-contrato-icon-container {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fde047 !important; /* mantiene tono amarillo de la pestaña original */
+  }
+
+  /* Icono Festivos (igual que Calendario de rotaciones) */
+  body.dark #festivos-icon-container {
+    background-color: rgba(5, 150, 105, 0.2) !important;
+    background: rgba(5, 150, 105, 0.2) !important;
+    border: 1px solid #34d399 !important;
+    color: #34d399 !important;
+  }
+
+  /* Icono Tablas Convenio Azul Handling */
+  body.dark #tablas-convenio-icon-container {
+    background-color: #020617 !important;
+    background: #020617 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #60a5fa !important; /* mantiene tono azul claro */
+  }
+
+  /* Iconos de los desplegables en Herramientas (Dark Mode) */
+  body.dark [data-active-tab="Herramientas"] .text-\[\#059669\] {
+    color: #34d399 !important; /* light green */
+  }
+  body.dark [data-active-tab="Herramientas"] .bg-\[\#e6f9f3\] {
+    background-color: rgba(5, 150, 105, 0.2) !important;
+    border: 1px solid #34d399 !important;
+  }
+  
+  body.dark [data-active-tab="Herramientas"] .text-blue-600 {
+    color: #60a5fa !important; /* light blue */
+  }
+  body.dark [data-active-tab="Herramientas"] .bg-blue-50 {
+    background-color: rgba(37, 99, 235, 0.2) !important;
+    border: 1px solid #60a5fa !important;
+  }
+
+  body.dark [data-active-tab="Herramientas"] .text-purple-600 {
+    color: #c084fc !important; /* light purple */
+  }
+  body.dark [data-active-tab="Herramientas"] .bg-purple-50 {
+    background-color: rgba(124, 58, 237, 0.2) !important;
+    border: 1px solid #c084fc !important;
+  }
+
+  body.dark [data-active-tab="Herramientas"] #baja-laboral-icon,
+  body.dark [data-active-tab="Herramientas"] .baja-icon-box {
+    background-color: rgba(225, 29, 72, 0.2) !important;
+    border: 1px solid #fb7185 !important;
+    color: #fb7185 !important;
+  }
+
+  body.dark [data-active-tab="Herramientas"] #irpf-recommender-icon,
+  body.dark [data-active-tab="Herramientas"] .irpf-icon-box {
+    background-color: rgba(5, 150, 105, 0.2) !important;
+    border: 1px solid #34d399 !important;
+    color: #34d399 !important;
+  }
+
+  /* Guías de uso (Tutorial Modal) Footer Background and Dots */
+  #tutorial-modal-footer {
+    background: linear-gradient(to right, #0f172a, #1e293b, #003399) !important;
+    background-image: linear-gradient(to right, #0f172a, #1e293b, #003399) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* App name in top banner of the same color as the icon's background (bg-azul-blue) in light mode */
+  #app-title-text {
+    color: #003399 !important;
+    color: var(--color-azul-blue, #003399) !important;
+  }
+
+  body.dark #app-title-text {
+    color: #ffffff !important;
+  }
+
+  /* Minibotón info in dark mode to be white */
+  body.dark #app-info-btn {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  body.dark #app-info-btn svg {
+    color: #ffffff !important;
+  }
+
+  /* Recuadro 'análisis de diferencias' con el mismo fondo que el botón de subir nómina (#0f172a) */
+  body.dark #analisis-diferencias-box {
+    background-color: #0f172a !important;
+    background: #0f172a !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Modal Evolución Anual: Recuadro del gráfico de horas del mismo color que 'Total Anual' en modo oscuro */
+  body.dark #total-anual-modal-box {
+    background-color: rgba(0, 51, 153, 0.25) !important;
+    background: rgba(0, 51, 153, 0.25) !important;
+    border-color: rgba(96, 165, 250, 0.3) !important;
+  }
+  body.dark #total-anual-modal-box span {
+    color: #93c5fd !important;
+  }
+  body.dark #total-anual-modal-box span.text-xl {
+    color: #ffffff !important;
+  }
+
+  body.dark #chart-annual-hours-box {
+    background-color: rgba(0, 51, 153, 0.25) !important;
+    background: rgba(0, 51, 153, 0.25) !important;
+    border-color: rgba(96, 165, 250, 0.3) !important;
+    color: #93c5fd !important;
+  }
+
+  body.dark #chart-annual-hours-box span,
+  body.dark #chart-annual-hours-box h4 {
+    color: #93c5fd !important;
+  }
+
+  body.dark #chart-annual-hours-box .chart-badge {
+    background-color: rgba(0, 51, 153, 0.4) !important;
+    color: #ffffff !important;
+    border-color: rgba(96, 165, 250, 0.4) !important;
+  }
+
+  body.dark #chart-annual-hours-box text {
+    fill: #93c5fd !important;
+  }
+
+  body.dark #chart-annual-hours-box text.text-selected {
+    fill: #ffffff !important;
+  }
+
+  body.dark #chart-annual-hours-box line.grid-line {
+    stroke: rgba(147, 197, 253, 0.25) !important;
+  }
+
+  body.dark #chart-annual-hours-box path.chart-line {
+    stroke: #60a5fa !important;
+  }
+
+  body.dark #chart-annual-hours-box circle.data-point {
+    fill: #0f172a !important;
+    stroke: #60a5fa !important;
+  }
+
+  /* Desplegable I Convenio Azul Handling: Cuadrados de los capítulos con los colores del 'Gráfico de Líneas de Horas por Mes' */
+  body.dark .convenio-chapter-btn,
+  body.dark .convenio-article-item {
+    background-color: rgba(0, 51, 153, 0.25) !important;
+    background: rgba(0, 51, 153, 0.25) !important;
+    border-color: rgba(96, 165, 250, 0.3) !important;
+  }
+
+  body.dark .convenio-chapter-btn:hover,
+  body.dark .convenio-article-item:hover {
+    background-color: rgba(0, 51, 153, 0.45) !important;
+    background: rgba(0, 51, 153, 0.45) !important;
+    border-color: rgba(96, 165, 250, 0.5) !important;
+  }
+
+  body.dark .convenio-chapter-btn span,
+  body.dark .convenio-article-item span {
+    color: #93c5fd !important;
+  }
+
+  body.dark .convenio-chapter-btn h4,
+  body.dark .convenio-article-item h5 {
+    color: #ffffff !important;
+  }
+
+  body.dark .convenio-article-item p {
+    color: #cbd5e1 !important;
+  }
+
+  body.dark #share-month-modal-title {
+    color: #ffffff !important;
+  }
+
+  /* Baja IT y Ausencia Justificada: cuadros del calendario y píldoras de horarios */
+  .day-cell-baja-it {
+    background-color: rgba(10, 10, 10, 0.12) !important;
+  }
+  body.dark .day-cell-baja-it {
+    background-color: rgba(0, 0, 0, 0.55) !important;
+  }
+
+  .day-cell-ausencia {
+    background-color: rgba(249, 115, 22, 0.15) !important;
+  }
+  body.dark .day-cell-ausencia {
+    background-color: rgba(249, 115, 22, 0.22) !important;
+  }
+
+  .shift-pill-baja-it,
+  body.dark .shift-pill-baja-it {
+    background-color: #0a0a0a !important;
+    border-color: #262626 !important;
+    color: #ffffff !important;
+  }
+  .shift-pill-baja-it span,
+  body.dark .shift-pill-baja-it span {
+    color: #ffffff !important;
+  }
+
+  .shift-pill-ausencia,
+  body.dark .shift-pill-ausencia {
+    background-color: #fb923c !important;
+    border-color: #f97316 !important;
+    color: #000000 !important;
+  }
+  .shift-pill-ausencia span,
+  body.dark .shift-pill-ausencia span {
+    color: #000000 !important;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  }
+
+  /* Modal scroll lock helper */
+  body.modal-open main > div > div.overflow-y-auto {
+    overflow-y: hidden !important;
+  }
+
+  /* iOS Safe Area Utilities */
+  .safe-top {
+    padding-top: max(12px, calc(env(safe-area-inset-top, 0px) + 10px)) !important;
+  }
+  
+  .pb-safe {
+    padding-bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 8px)) !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .safe-top {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 16px) !important;
+  }
+}
+
+/* Modo Calendario: Borde recto de 1 pixel sólido y radio de curvatura cero (0px) */
+.modo-calendario {
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-radius: 0px !important;
+}
+
+/* Segunda empresa en modo oscuro: fondo negro puro idéntico al contenedor alerta de solapes */
+body.dark #horas-totales-box-second,
+body.dark #proximo-turno-second-card {
+  background-color: #000000 !important;
+  background-image: none !important;
+  background: #000000 !important;
+}
+
+/* Secciones integradas dentro de ventanas flotantes sin doble tarjeta ni doble borde en modo claro/oscuro */
+section.modal-embedded-section,
+body.dark section.modal-embedded-section,
+body.dark [data-active-tab="Configuracion"] section.modal-embedded-section,
+body.dark #tipo-contrato-section.modal-embedded-section,
+body.dark #progresion-nivel-section.modal-embedded-section,
+body.dark #festivos-section.modal-embedded-section,
+body.dark #vacaciones-section.modal-embedded-section,
+body.dark #puntuacion-vacaciones-section.modal-embedded-section {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}

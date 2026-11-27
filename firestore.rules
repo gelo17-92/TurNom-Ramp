@@ -1,0 +1,413 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isEmailAdmin() {
+      return isAuthenticated() &&
+        (request.auth.token.email == "angel2martinez92@gmail.com" || request.auth.token.email == "gelo.mm92@gmail.com") && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isEmailAdmin() || (isAuthenticated() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.diff({}).affectedKeys().hasOnly(fields);
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidPlusId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128;
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidLevel(data) {
+      return hasOnlyAllowedFields(['year', 'nivel', 'anual']) &&
+             data.year is number &&
+             data.nivel is number &&
+             data.anual is number;
+    }
+
+    function isValidPlus(data) {
+      return hasOnlyAllowedFields([
+        'year', 'name', 'value', 'subValue', 'startHour', 'endHour', 'subStartHour', 'subEndHour',
+        'madrugueStart', 'madrugueEnd', 'madrugueMinEnd', 'madrugueMinEndEnabled',
+        'subMadrugueStart', 'subMadrugueEnd', 'subMadrugueMinEnd', 'subMadrugueMinEndEnabled',
+        'pagas', 'enabled', 'isVariable'
+      ]) &&
+      data.year is number &&
+      data.name is string &&
+      data.value is number &&
+      (data.pagas == 12 || data.pagas == 14) &&
+      data.enabled is bool;
+    }
+
+    function isValidSettings(data) {
+      return (data.contractType == 'Completo' || data.contractType == 'Parcial') &&
+      (data.pagas == 12 || data.pagas == 14) &&
+      data.seniorityDate is string &&
+      data.nextLevelDate is string &&
+      data.holidays is list &&
+      data.vacations is list &&
+      data.frozenPeriods is list &&
+      data.irpf is number &&
+      data.rateContingencias is number &&
+      data.rateDesempleo is number &&
+      data.rateFormacion is number &&
+      data.rateEquidad is number &&
+      data.cuotaSindical is number &&
+      data.currentLevel is number &&
+      data.selectedLevel is number &&
+      data.monthlyOptions is map &&
+      data.counterPeriod is map &&
+      data.counterTargets is map &&
+      data.isSubrogado is bool &&
+      (!data.keys().contains('yearlyUpdates') || data.yearlyUpdates is map) &&
+      (!data.keys().contains('yearlySubUpdates') || data.yearlySubUpdates is map) &&
+      (!data.keys().contains('subrogadoBaseSalaries') || data.subrogadoBaseSalaries is map) &&
+      (!data.keys().contains('complementariasPrice') || data.complementariasPrice is number) &&
+      (!data.keys().contains('expandedTablasSections') || data.expandedTablasSections is map) &&
+      (!data.keys().contains('savedPayrolls') || data.savedPayrolls is list) &&
+      (!data.keys().contains('uploadedPayrolls') || data.uploadedPayrolls is list) &&
+      (!data.keys().contains('dualMode') || data.dualMode is bool) &&
+      (!data.keys().contains('secondCompanyName') || data.secondCompanyName is string) &&
+      (!data.keys().contains('secondCompanyColor') || data.secondCompanyColor is string) &&
+      (!data.keys().contains('secondCompanyShifts') || data.secondCompanyShifts is list) &&
+      (!data.keys().contains('calendarRotation') || data.calendarRotation is map) &&
+      (!data.keys().contains('autoShiftsConfig') || data.autoShiftsConfig is map) &&
+      (!data.keys().contains('customRotation') || data.customRotation is map) &&
+      (!data.keys().contains('mixedRotation') || data.mixedRotation is map);
+    }
+
+    function isValidShift(data) {
+      return data.date is string &&
+      (data.type == 'Laboral' || data.type == 'A Compensar' || data.type == 'Vacaciones' || data.type == 'Baja IT' || data.type == 'Ausencia Justificada' || data.type == 'Permiso Retribuido' || data.type == 'Horas Sindicales' || data.type == 'Cambio de función') &&
+      data.shifts is list &&
+      data.perentorias is map &&
+      data.complementarias is map &&
+      data.extraShifts is list &&
+      (!data.keys().contains('generatePluses') || data.generatePluses is bool) &&
+      (!data.keys().contains('extraHoursStrategy') || data.extraHoursStrategy == 'pay' || data.extraHoursStrategy == 'compensate');
+    }
+
+    function isValidSwapNotification(data) {
+      return data.keys().hasAll([
+        'id', 'type', 'recipientUid', 'senderUid', 'senderName',
+        'myOriginalDate', 'myOriginalShifts', 'coveredDate', 'coveredShifts',
+        'appliedToCalendar', 'read', 'createdAt', 'timestamp'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'type', 'recipientUid', 'senderUid', 'senderEmail', 'senderName',
+        'myOriginalDate', 'myOriginalShifts', 'coveredDate', 'coveredShifts',
+        'appliedToCalendar', 'read', 'requestId', 'status', 'createdAt', 'timestamp'
+      ]) &&
+      data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+      (data.type == 'shift_swap' || data.type == 'shift_swap_undo' || data.type == 'shift_swap_request' || data.type == 'shift_swap_accepted' || data.type == 'shift_swap_rejected') &&
+      data.recipientUid is string && data.recipientUid.size() >= 1 && data.recipientUid.size() <= 128 &&
+      data.senderUid is string && data.senderUid.size() >= 1 && data.senderUid.size() <= 128 &&
+      data.senderName is string && data.senderName.size() <= 120 &&
+      (!data.keys().hasAny(['senderEmail']) || (data.senderEmail is string && data.senderEmail.size() <= 200)) &&
+      data.myOriginalDate is string && data.myOriginalDate.size() <= 20 &&
+      data.coveredDate is string && data.coveredDate.size() <= 20 &&
+      data.myOriginalShifts is list && data.myOriginalShifts.size() <= 10 &&
+      data.coveredShifts is list && data.coveredShifts.size() <= 10 &&
+      data.appliedToCalendar is bool &&
+      data.read is bool &&
+      (!data.keys().hasAny(['requestId']) || (data.requestId is string && data.requestId.size() <= 128)) &&
+      (!data.keys().hasAny(['status']) || (data.status == 'pending' || data.status == 'accepted' || data.status == 'rejected' || data.status == 'undone')) &&
+      data.createdAt is string && data.createdAt.size() <= 50 &&
+      data.timestamp is number;
+    }
+
+    function isValidSwapRequest(data) {
+      return data.keys().hasAll([
+        'id', 'senderUid', 'senderName', 'recipientUid', 'recipientName',
+        'senderDate', 'senderShifts', 'recipientDate', 'recipientShifts',
+        'status', 'createdAt', 'updatedAt', 'timestamp'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'senderUid', 'senderName', 'senderEmail', 'recipientUid', 'recipientName', 'recipientEmail',
+        'senderDate', 'senderShifts', 'recipientDate', 'recipientShifts',
+        'status', 'createdAt', 'updatedAt', 'respondedAt', 'timestamp'
+      ]) &&
+      data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+      data.senderUid is string && data.senderUid.size() >= 1 && data.senderUid.size() <= 128 &&
+      data.senderName is string && data.senderName.size() <= 120 &&
+      (!data.keys().hasAny(['senderEmail']) || (data.senderEmail is string && data.senderEmail.size() <= 200)) &&
+      data.recipientUid is string && data.recipientUid.size() >= 1 && data.recipientUid.size() <= 128 &&
+      data.recipientName is string && data.recipientName.size() <= 120 &&
+      (!data.keys().hasAny(['recipientEmail']) || (data.recipientEmail is string && data.recipientEmail.size() <= 200)) &&
+      data.senderDate is string && data.senderDate.size() <= 20 &&
+      data.recipientDate is string && data.recipientDate.size() <= 20 &&
+      data.senderShifts is list && data.senderShifts.size() <= 10 &&
+      data.recipientShifts is list && data.recipientShifts.size() <= 10 &&
+      (data.status == 'pending' || data.status == 'accepted' || data.status == 'rejected' || data.status == 'undone') &&
+      data.createdAt is string && data.createdAt.size() <= 50 &&
+      data.updatedAt is string && data.updatedAt.size() <= 50 &&
+      (!data.keys().hasAny(['respondedAt']) || (data.respondedAt is string && data.respondedAt.size() <= 50)) &&
+      data.timestamp is number;
+    }
+
+    function isSharedEditor(userId) {
+      return isAuthenticated() && exists(/databases/$(database)/documents/users/$(userId)/config/sharing) &&
+        (!('disabledEditors' in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data) ||
+         request.auth.token.email == null ||
+         !(request.auth.token.email in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data.disabledEditors)) &&
+        (!('disabledEditorUids' in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data) ||
+         !(request.auth.uid in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data.disabledEditorUids)) &&
+        (
+          (('editorUids' in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data) &&
+           (request.auth.uid in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data.editorUids)) ||
+          (request.auth.token.email != null &&
+           ('editors' in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data) &&
+           (request.auth.token.email in get(/databases/$(database)/documents/users/$(userId)/config/sharing).data.editors))
+        );
+    }
+
+    // ===============================================================
+    // Match Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isEmailAdmin();
+      allow write: if isEmailAdmin() || (isOwner(userId) && (resource == null || !request.resource.data.keys().contains('role') || request.resource.data.role == resource.data.role));
+
+      // Config collection (e.g., settings, sharing)
+      match /config/{docId} {
+        allow read: if isOwner(userId) || isSharedEditor(userId) || isAdmin();
+        allow create, update: if (isOwner(userId) || isAdmin()) && (docId != 'settings' || isValidSettings(request.resource.data));
+        allow delete: if isOwner(userId) || isAdmin();
+      }
+
+      // Levels collection
+      match /levels/{levelId} {
+        allow read: if isOwner(userId) || isSharedEditor(userId) || isAdmin();
+        allow create, update: if (isOwner(userId) || isAdmin()) && isValidId(levelId) && isValidLevel(request.resource.data);
+        allow delete: if isOwner(userId) || isAdmin();
+      }
+
+      // Pluses collection
+      match /pluses/{plusId} {
+        allow read: if isOwner(userId) || isSharedEditor(userId) || isAdmin();
+        allow create, update: if (isOwner(userId) || isAdmin()) && isValidPlusId(plusId) && isValidPlus(request.resource.data);
+        allow delete: if isOwner(userId) || isAdmin();
+      }
+
+      // Shifts collection (owner and authorized shared editors can read and edit)
+      match /shifts/{date} {
+        allow read: if isOwner(userId) || isSharedEditor(userId) || isAdmin();
+        allow create, update: if (isOwner(userId) || isSharedEditor(userId) || isAdmin()) && isValidId(date) && isValidShift(request.resource.data);
+        allow delete: if isOwner(userId) || isSharedEditor(userId) || isAdmin();
+      }
+
+      // Swap notifications collection (owner reads/marks read/deletes; authorized collaborator or swap counterparty creates)
+      match /notifications/{notificationId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create: if isAuthenticated() &&
+          isValidId(notificationId) &&
+          isValidSwapNotification(request.resource.data) &&
+          request.resource.data.senderUid == request.auth.uid &&
+          request.resource.data.recipientUid == userId &&
+          request.resource.data.read == false &&
+          (
+            isOwner(userId) ||
+            isSharedEditor(userId) ||
+            isAdmin() ||
+            (
+              request.resource.data.keys().hasAny(['requestId']) &&
+              isValidId(request.resource.data.requestId) &&
+              exists(/databases/$(database)/documents/swap_requests/$(request.resource.data.requestId)) &&
+              (
+                (
+                  get(/databases/$(database)/documents/swap_requests/$(request.resource.data.requestId)).data.senderUid == userId &&
+                  get(/databases/$(database)/documents/swap_requests/$(request.resource.data.requestId)).data.recipientUid == request.auth.uid
+                ) ||
+                (
+                  get(/databases/$(database)/documents/swap_requests/$(request.resource.data.requestId)).data.recipientUid == userId &&
+                  get(/databases/$(database)/documents/swap_requests/$(request.resource.data.requestId)).data.senderUid == request.auth.uid
+                )
+              )
+            )
+          );
+        allow update: if (isOwner(userId) || isAdmin()) &&
+          isValidId(notificationId) &&
+          isValidSwapNotification(request.resource.data) &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'status']) &&
+          request.resource.data.senderUid == resource.data.senderUid &&
+          request.resource.data.recipientUid == resource.data.recipientUid &&
+          request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if isOwner(userId) || isAdmin();
+      }
+    }
+
+    // Shift swap requests with pending / accepted / rejected approval lifecycle
+    match /swap_requests/{requestId} {
+      allow read: if isAuthenticated() && (
+        resource.data.senderUid == request.auth.uid ||
+        resource.data.recipientUid == request.auth.uid ||
+        isAdmin()
+      );
+      allow create: if isAuthenticated() &&
+        isValidId(requestId) &&
+        isValidSwapRequest(request.resource.data) &&
+        request.resource.data.senderUid == request.auth.uid &&
+        request.resource.data.recipientUid != request.auth.uid &&
+        request.resource.data.status == 'pending' &&
+        (isSharedEditor(request.resource.data.recipientUid) || isAdmin());
+      allow update: if isAuthenticated() &&
+        isValidId(requestId) &&
+        isValidSwapRequest(request.resource.data) &&
+        (
+          isAdmin() ||
+          (
+            resource.data.recipientUid == request.auth.uid &&
+            resource.data.status == 'pending' &&
+            (request.resource.data.status == 'accepted' || request.resource.data.status == 'rejected') &&
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt', 'respondedAt']) &&
+            request.resource.data.senderUid == resource.data.senderUid &&
+            request.resource.data.recipientUid == resource.data.recipientUid &&
+            request.resource.data.createdAt == resource.data.createdAt
+          ) ||
+          (
+            (resource.data.senderUid == request.auth.uid || resource.data.recipientUid == request.auth.uid) &&
+            resource.data.status == 'accepted' &&
+            request.resource.data.status == 'undone' &&
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt', 'respondedAt']) &&
+            request.resource.data.senderUid == resource.data.senderUid &&
+            request.resource.data.recipientUid == resource.data.recipientUid &&
+            request.resource.data.createdAt == resource.data.createdAt
+          )
+        );
+      allow delete: if isAuthenticated() &&
+        isValidId(requestId) &&
+        (
+          resource.data.senderUid == request.auth.uid ||
+          resource.data.recipientUid == request.auth.uid ||
+          isAdmin()
+        );
+    }
+
+    // Collaborations collection linking owner and editor
+    match /collaborations/{collabId} {
+      allow read: if isAuthenticated() && (
+        resource.data.ownerUid == request.auth.uid ||
+        (request.auth.token.email != null && resource.data.editorEmail == request.auth.token.email) ||
+        resource.data.editorUid == request.auth.uid ||
+        isAdmin()
+      );
+      allow create, update: if isAuthenticated() && (
+        request.resource.data.ownerUid == request.auth.uid ||
+        (request.auth.token.email != null && request.resource.data.editorEmail == request.auth.token.email) ||
+        isAdmin()
+      );
+      allow delete: if isAuthenticated() && (
+        resource.data.ownerUid == request.auth.uid ||
+        (request.auth.token.email != null && resource.data.editorEmail == request.auth.token.email) ||
+        isAdmin()
+      );
+    }
+
+    // Collaboration invites by 6-digit code
+    match /collaboration_codes/{code} {
+      allow read: if isAuthenticated() && code is string && code.size() == 6;
+      allow create, update: if isAuthenticated() && code is string && code.size() == 6 &&
+        request.resource.data.ownerUid == request.auth.uid;
+      allow delete: if isAuthenticated() && (
+        resource.data.ownerUid == request.auth.uid ||
+        isAdmin()
+      );
+    }
+
+    match /app_updates/{docId} {
+      allow read: if true;
+      allow write: if isEmailAdmin() || isAdmin();
+    }
+
+    match /shared_months/{code} {
+      allow read: if code is string && code.size() == 4 && code.matches('^[A-Z0-9]{4}$');
+      allow create: if code is string && code.size() == 4 && code.matches('^[A-Z0-9]{4}$') &&
+        request.resource.data.keys().hasAll(['code', 'monthKey', 'shifts']) &&
+        request.resource.data.keys().hasOnly(['code', 'monthKey', 'ownerName', 'ownerUid', 'updatedAt', 'shifts', 'vacations']) &&
+        request.resource.data.code == code &&
+        request.resource.data.monthKey is string && request.resource.data.monthKey.size() <= 20 &&
+        request.resource.data.shifts is list && request.resource.data.shifts.size() <= 40 &&
+        (!request.resource.data.keys().hasAny(['ownerUid']) || (isAuthenticated() && request.resource.data.ownerUid == request.auth.uid));
+      allow update: if code is string && code.size() == 4 && code.matches('^[A-Z0-9]{4}$') &&
+        request.resource.data.keys().hasAll(['code', 'monthKey', 'shifts']) &&
+        request.resource.data.keys().hasOnly(['code', 'monthKey', 'ownerName', 'ownerUid', 'updatedAt', 'shifts', 'vacations']) &&
+        request.resource.data.code == code &&
+        request.resource.data.monthKey is string && request.resource.data.monthKey.size() <= 20 &&
+        request.resource.data.shifts is list && request.resource.data.shifts.size() <= 40 &&
+        (
+          isAdmin() ||
+          !resource.data.keys().hasAny(['ownerUid']) ||
+          (isAuthenticated() && resource.data.ownerUid == request.auth.uid && request.resource.data.ownerUid == resource.data.ownerUid)
+        );
+      allow delete: if isAdmin() || (
+        isAuthenticated() &&
+        resource.data.keys().hasAny(['ownerUid']) &&
+        resource.data.ownerUid == request.auth.uid
+      );
+    }
+
+    function isValidSuggestionScreenshots(data) {
+      return !data.keys().hasAny(['screenshots']) || (
+        data.screenshots is list &&
+        data.screenshots.size() <= 3 &&
+        (data.screenshots.size() == 0 || (data.screenshots[0] is string && data.screenshots[0].size() <= 400000)) &&
+        (data.screenshots.size() <= 1 || (data.screenshots[1] is string && data.screenshots[1].size() <= 400000)) &&
+        (data.screenshots.size() <= 2 || (data.screenshots[2] is string && data.screenshots[2].size() <= 400000))
+      );
+    }
+
+    match /suggestions/{suggestionId} {
+      allow create: if request.resource.data.keys().hasAll(['userName', 'type', 'description', 'createdAt']) &&
+                       request.resource.data.keys().hasOnly(['id', 'userName', 'type', 'description', 'userEmail', 'appVersion', 'createdAt', 'timestamp', 'screenshots']) &&
+                       request.resource.data.userName is string &&
+                       request.resource.data.userName.size() <= 100 &&
+                       request.resource.data.type is string &&
+                       request.resource.data.type.size() <= 50 &&
+                       request.resource.data.description is string &&
+                       request.resource.data.description.size() <= 5000 &&
+                       isValidSuggestionScreenshots(request.resource.data);
+      allow read, delete: if isEmailAdmin() || isAdmin();
+    }
+
+    match /suggestion_settings/{docId} {
+      allow read: if true;
+      allow create, update: if (isEmailAdmin() || isAdmin()) &&
+                               request.resource.data.keys().hasAll(['notifyEmail']) &&
+                               request.resource.data.keys().hasOnly(['notifyEmail', 'updatedAt']) &&
+                               request.resource.data.notifyEmail is bool &&
+                               (!request.resource.data.keys().hasAny(['updatedAt']) || request.resource.data.updatedAt is number);
+      allow delete: if isEmailAdmin() || isAdmin();
+    }
+
+    // Default deny catch-all
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+}
